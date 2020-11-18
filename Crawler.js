@@ -4,6 +4,7 @@
 
 const puppeteer = require('puppeteer');					//Importa a biblioteca `puppeteer` como objeto.
 const connection = require("./database/connection");	//Importa a biblioteca de conexão como objeto.
+var userAgent = require('user-agents');
 
 //main();
 //Exporta função para permitir importação em outros arquivos / Função main
@@ -36,10 +37,11 @@ function crawler(email) //Executa o Crawler
 		 '--no-sandbox',
 		 '--disable-setuid-sandbox'
 	 ],
-	 headless: false,
+	 headless: true,
 	 });
 
 	 const page = await browser.newPage(); 			//Abre o browser
+	 await page.setUserAgent(userAgent.toString())
 	 await page.goto(url);
 	 await page.waitFor(2000);
 
@@ -49,7 +51,7 @@ function crawler(email) //Executa o Crawler
 		relatorio = relatorio.concat("-------------------------------------------------");
 		relatorio = relatorio.concat(email[i].email);
 	 	await page.goto(url); 							//Vai para a url definida
-	 	await page.waitForSelector('input#Account.form-control',{waitUntil: 'load', timeout: 0});
+	 	await page.waitForSelector('input#Account.form-control')//,{waitUntil: 'load', timeout: 0});
  	 	await page.$eval('input#Account',(el, value) => el.value = value, email[i].email);
 	 	await page.click('button#searchPwnage');
 	 	await page.waitFor(2000); 						//Espera 2 segundos para carregar a pagina do site
