@@ -30,13 +30,12 @@ function crawler(email) //Executa o Crawler
  var url = 'https://haveibeenpwned.com/';	//Inicializa a variavel URL
 
  let scrape = async()=>{ 							//Chama uma função assincrona armazenando o resultado na constante scrape
-
+  try{												//Tratamento de erro ao executar o codigo abaixo
 	 const browser = await puppeteer.launch({		//Inicializa a constante browser definindo as propriedades e abrindo o chrome
 	 'args':[
 		 '--no-sandbox',
 		 '--disable-setuid-sandbox'
-	 ],
-	 headless: false,
+	 ]
 	 });
 
 	 const page = await browser.newPage(); 			//Abre o browser
