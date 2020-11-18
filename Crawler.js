@@ -49,7 +49,7 @@ function crawler(email) //Executa o Crawler
 		relatorio = relatorio.concat("-------------------------------------------------");
 		relatorio = relatorio.concat(email[i].email);
 	 	await page.goto(url); 							//Vai para a url definida
-	 	await page.waitForSelector('input#Account');
+	 	await page.waitForSelector('input#Account',{waitUntil: 'load', timeout: 0});
  	 	await page.$eval('input#Account',(el, value) => el.value = value, email[i].email);
 	 	await page.click('button#searchPwnage');
 	 	await page.waitFor(2000); 						//Espera 2 segundos para carregar a pagina do site
@@ -73,7 +73,7 @@ function crawler(email) //Executa o Crawler
 
  	scrape().then((value)=>{     				//Pega o valor do results acima
  		console.log(value);
- 		//organiza(value);
+ 		organiza(value);
 	});
 
 } //fim da função crawler
