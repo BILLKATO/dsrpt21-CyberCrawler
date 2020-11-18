@@ -36,7 +36,7 @@ function crawler(email) //Executa o Crawler
 		 '--no-sandbox',
 		 '--disable-setuid-sandbox'
 	 ],
-	 headless: true,
+	 headless: false,
 	 });
 
 	 const page = await browser.newPage(); 			//Abre o browser
@@ -70,7 +70,7 @@ function crawler(email) //Executa o Crawler
 
 
  	scrape().then((value)=>{     				//Pega o valor do results acima
- 		console.log(value);
+ 		//console.log(value);
  		organiza(value);
 	});
 
