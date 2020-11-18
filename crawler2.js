@@ -3,6 +3,8 @@
 */
 
 const puppeteer = require('puppeteer');					//Importa a biblioteca `puppeteer` como objeto.
+const connection = require("../database/connection");	//Importa a biblioteca de conexão como objeto.
+var Crawler1 = require('./crawler1.js');				//Importa o Crawler1 como objeto.
 
 //main();
 //Exporta função para permitir importação em outros arquivos / Função main
@@ -10,11 +12,11 @@ module.exports = function main(){
 //function main(){
 
 console.log("\n\n\n-----------------------CRAWLER2-----------------------");
-crawler();
+crawler(connection);
 }
 
 
-function crawler() //Executa o Crawler
+function crawler(conn) //Executa o Crawler
 {
  var url = 'https://consultas.anvisa.gov.br/#/medicamentos/q/?cnpj=10588595001092';	//Inicializa a variavel URL
 
@@ -88,7 +90,39 @@ function crawler() //Executa o Crawler
 
 
  	scrape().then((value)=>{     				//Pega o valor do results acima
-		console.log(value);
+
+ 	 organiza(value,conn); //Chama a função organiza, que irá organizar e inserir os valores no BD
+
+ 	 setTimeout(function(){Crawler_1 = new Crawler1},value.length*20); //Aguarda a inserção dos registros para iniciar o Crawler1.
+
 	});
 
 } //fim da função crawler
+
+
+function organiza(value,conn){ 		//Separa os `pedaços` do texto recuperado pelo bot organizando e inserindo no BD
+
+		for(var i=0;value[i] != null;i++){	    //Visita todos os registros buscados pelo crawler organizando e chamando a função para inserir no banco
+
+			  processo = value[i].split('.').join('').split('/').join('').split('-').join(''); //Separa os `pedaços` do texto e organiza
+			  addRows(conn, processo);	//função de inserir no banco
+			  console.log(processo);
+		  }
+
+}//fim da função organiza
+
+
+function addRows(conn, processo){ 				//Adiciona linhas em uma tabela no BD
+	const sql = 'INSERT INTO produtos(numero_processo,nome_produto,principio_ativo) VALUES ?';
+	const values = [[processo,'','']];
+
+	conn.query(sql,[values],function(error,results,fields){
+	if(error==null) console.log('Adicionou Registros');
+	else if(error.code == "ER_DUP_ENTRY") return console.log("Registro ja Existente");
+	else if(error) return console.log(error);
+	});
+
+}//fim da função addRows
+
+
+
