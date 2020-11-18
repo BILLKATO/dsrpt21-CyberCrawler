@@ -4,7 +4,7 @@ const bodyParser = require('body-parser');
 const port = process.env.PORT || 8080; //porta padrão
 const mysql = require('mysql');
 var Crawler = require('./Crawler.js');
-//var Crawler = require('./crawler2.js');
+var ligar;
 
 app.use(function(req, res, next) {
 	 res.header('Access-Control-Allow-Origin',req.headers.origin||"*");
@@ -54,7 +54,7 @@ console.log('API funcionando!');
 
 	 crawlers();
 	 clearInterval(ligar);
-	 setInterval(crawlers,10800000);
+	 ligar = setInterval(crawlers,10800000);
 	 res.json("Rodando Crawler");
      });
 
@@ -84,7 +84,7 @@ const connection = mysql.createConnection({
 
 }
 
-var ligar = setInterval(crawlers,10800000);
+ ligar = setInterval(crawlers,10800000);
 
 function crawlers(){
   crawler = new Crawler();
