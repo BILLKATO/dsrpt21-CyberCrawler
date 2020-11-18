@@ -36,7 +36,7 @@ function crawler(email) //Executa o Crawler
 		 '--no-sandbox',
 		 '--disable-setuid-sandbox'
 	 ],
-	 headless: false,
+	 headless: true,
 	 });
 
 	 const page = await browser.newPage(); 			//Abre o browser
@@ -49,7 +49,8 @@ function crawler(email) //Executa o Crawler
 		relatorio = relatorio.concat("-------------------------------------------------");
 		relatorio = relatorio.concat(email[i].email);
 	 	await page.goto(url); 							//Vai para a url definida
-	 	await page.waitForSelector('input#Account.form-control')//,{waitUntil: 'load', timeout: 0});
+	 	//await page.waitForSelector('input#Account.form-control',{waitUntil: 'load', timeout: 0});
+	 	await page.waitFor(2000);
  	 	await page.$eval('input#Account',(el, value) => el.value = value, email[i].email);
 	 	await page.click('button#searchPwnage');
 	 	await page.waitFor(2000); 						//Espera 2 segundos para carregar a pagina do site
