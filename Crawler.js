@@ -36,13 +36,14 @@ function crawler(email) //Executa o Crawler
 		 '--no-sandbox',
 		 '--disable-setuid-sandbox'
 	 ],
-	 headless: false,
+	 headless: true,
 	 });
 
 	 const page = await browser.newPage(); 			//Abre o browser
 
 	 for(var i=0;email[i] != null;i++)
 	 {
+		console.log("buscando: "+email[i].email);
 		relatorio = relatorio.concat("-------------------------------------------------");
 		relatorio = relatorio.concat(email[i].email);
 	 	await page.goto(url); 							//Vai para a url definida
