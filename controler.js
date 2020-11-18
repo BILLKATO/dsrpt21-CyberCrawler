@@ -27,11 +27,11 @@ console.log('API funcionando!');
      execSQLQuery(sql, res, 0);
      });
 
- app.get('/monitoramento/:email?', (req, res) =>{
+ app.get('/monitoramento/:email?/:local?', (req, res) =>{
 	 var email = "";
 
 	 if(req.params.email)
-	  email = " WHERE email LIKE '"+req.params.email+"'";
+	  email = " WHERE email LIKE '"+req.params.email+"' AND local_vazado LIKE '"+req.params.local+"'";
 
 	 sql  = "SELECT * FROM Monitoramento";
 
@@ -78,7 +78,7 @@ const connection = mysql.createConnection({
 
       connection.end();
       console.log('executou!');
-      console.log(sqlQry);
+      //console.log(sqlQry);
   });
 
 }
